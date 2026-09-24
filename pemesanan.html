@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pemesanan - Restoran Akang Sunday</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">Akang Sunday</div>
+    <div class="nav-menu">
+      <a href="dashboard.html">Home</a>
+      <a href="menu.html">Menu</a>
+      <a href="gallery.html">Galeri</a>
+      <a href="pemesanan.html">Pemesanan</a>
+      <a href="kontak.html">Kontak</a>
+      <a href="about.html">About</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="title">
+      <h2>Pemesanan Makanan</h2>
+      <p>
+        Pilih menu yang ingin dipesan, tentukan jumlahnya,
+        lalu tambahkan ke daftar pesanan.
+      </p>
+    </div>
+
+    <!-- INFORMASI PEMESANAN -->
+    <div class="order-info">
+      <div class="info-box">
+        <h3>Langkah Pemesanan</h3>
+
+        <ol>
+          <li>Pilih Meja Yang kalian duduki.</li>
+          <li>Pilih menu yang ingin dipesan.</li>
+          <li>Klik &ldquo;Tambah Menu&rdquo;.</li>
+          <li>Tambahkan menu lain jika diperlukan.</li>
+          <li>Pastikan Menu yang dipilih sudah sesuai dan kirim pesanan.</li>
+        </ol>
+      </div>
+
+      <div class="info-box">
+        <h3>Daftar Menu</h3>
+        <ul>
+          <li>
+            <b>Makanan</b>
+            <ul>
+              <li>Nasi Goreng &mdash; Rp20.000</li>
+              <li>Mie Goreng &mdash; Rp18.000</li>
+              <li>Ayam Bakar &mdash; Rp25.000</li>
+            </ul>
+          </li>
+
+          <li>
+            <b>Minuman</b>
+            <ul>
+              <li>Es Teh Manis &mdash; Rp5.000</li>
+              <li>Jus Alpukat &mdash; Rp12.000</li>
+            </ul>
+          </li>
+
+          <li>
+            <b>Dessert</b>
+            <ul>
+              <li>Es Krim &mdash; Rp8.000</li>
+              <li>Puding &mdash; Rp7.000</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-box">
+      <h2>Buat Pesanan</h2>
+      <label>Nama Pemesan</label>
+      <input type="text" id="nama" placeholder="Masukkan nama" required>
+
+      <label>Nomor Meja</label>
+      <select id="meja">
+        <option value="">-- Pilih Meja --</option>
+        <option>Meja 1</option>
+        <option>Meja 2</option>
+        <option>Meja 3</option>
+        <option>Meja 4</option>
+        <option>Meja 5</option>
+      </select>
+
+      <!-- PILIH MENU -->
+      <div class="add-order">
+        <label>Pilih Menu</label>
+        <select id="menu">
+          <option value="">-- Pilih Menu --</option>
+          <option value="Nasi Goreng" data-harga="20000">
+            Nasi Goreng - Rp20.000
+          </option>
+          <option value="Mie Goreng" data-harga="18000">
+            Mie Goreng - Rp18.000
+          </option>
+          <option value="Ayam Bakar" data-harga="25000">
+            Ayam Bakar - Rp25.000
+          </option>
+          <option value="Es Teh Manis" data-harga="5000">
+            Es Teh Manis - Rp5.000
+          </option>
+          <option value="Jus Alpukat" data-harga="12000">
+            Jus Alpukat - Rp12.000
+          </option>
+          <option value="Es Krim" data-harga="8000">
+            Es Krim - Rp8.000
+          </option>
+          <option value="Puding" data-harga="7000">
+            Puding - Rp7.000
+          </option>
+        </select>
+
+        <label>Jumlah</label>
+        <input type="number" id="jumlah" value="1" min="1">
+        <button type="button" class="button" onclick="tambahMenu()">
+          + Tambah Menu
+        </button>
+      </div>
+
+      <!-- DAFTAR PESANAN -->
+      <div class="cart-box">
+        <h3>Pesanan Anda</h3>
+        <div id="pesanan">
+          <p>Belum ada menu yang dipilih.</p>
+        </div>
+
+        <div class="total">
+          <b>Total</b>
+          <b id="total">Rp0</b>
+        </div>
+
+      </div>
+      <label>Catatan</label>
+      <textarea id="catatan" rows="3" placeholder="Contoh: Tidak pedas, tanpa bawang..."></textarea>
+      <button type="button" class="button" onclick="kirimPesanan()">
+        Kirim Pesanan
+      </button>
+    </div>
+  </div>
+
+  <footer>
+    <p>Jl. Raya Nusantara No. 10, Tangerang, Banten</p>
+    <p>&copy; 2026 Restoran Akang Sunday</p>
+  </footer>
+
+  <script>
+
+    let pesanan = [];
+
+    function tambahMenu() {
+      let menu = document.getElementById("menu");
+      let jumlah = document.getElementById("jumlah");
+      if (menu.value == "") {
+        alert("Pilih menu terlebih dahulu.");
+        return;
+      }
+      let harga = Number(
+        menu.options[menu.selectedIndex].dataset.harga
+      );
+
+      let item = pesanan.find(x => x.nama == menu.value);
+
+      if (item) {
+        item.jumlah += Number(jumlah.value);
+      } else {
+        pesanan.push({
+          nama: menu.value,
+          harga: harga,
+          jumlah: Number(jumlah.value)
+        });
+      }
+      tampilkanPesanan();
+      menu.value = "";
+      jumlah.value = 1;
+    }
+
+    function tampilkanPesanan() {
+      let daftar = document.getElementById("pesanan");
+      let total = 0;
+
+      daftar.innerHTML = "";
+
+      if (pesanan.length == 0) {
+        daftar.innerHTML = "<p>Belum ada menu yang dipilih.</p>";
+        document.getElementById("total").innerText = "Rp0";
+        return;
+      }
+
+      pesanan.forEach((item, index) => {
+        let subtotal = item.harga * item.jumlah;
+        total += subtotal;
+
+        daftar.innerHTML += `
+          <div class="cart-item">
+            <div>
+              <b>${item.nama}</b>
+              <small>Rp${item.harga.toLocaleString("id-ID")}</small>
+            </div>
+            <div class="cart-actions">
+              <button onclick="ubahJumlah(${index}, -1)">&minus;</button>
+              <span>${item.jumlah}</span>
+              <button onclick="ubahJumlah(${index}, 1)">+</button>
+              <button onclick="hapusMenu(${index})">&times;</button>
+            </div>
+          </div>
+        `;
+      });
+      document.getElementById("total").innerText =
+        "Rp" + total.toLocaleString("id-ID");
+    }
+
+    function ubahJumlah(index, angka) {
+      pesanan[index].jumlah += angka;
+      if (pesanan[index].jumlah <= 0) {
+        pesanan.splice(index, 1);
+      }
+      tampilkanPesanan();
+    }
+
+    function hapusMenu(index) {
+      pesanan.splice(index, 1);
+      tampilkanPesanan();
+    }
+
+    function kirimPesanan() {
+      let nama = document.getElementById("nama").value;
+      let meja = document.getElementById("meja").value;
+      if (nama == "" || meja == "") {
+        alert("Nama dan nomor meja harus diisi.");
+        return;
+      }
+
+      if (pesanan.length == 0) {
+        alert("Tambahkan minimal satu menu.");
+        return;
+      }
+
+      alert(
+        "Pesanan berhasil dibuat!\n\n" +
+        "Nama: " + nama + "\n" +
+        "Meja: " + meja + "\n" +
+        "Total: " + document.getElementById("total").innerText
+      );
+    }
+
+  </script>
+
+</body>
+
+</html>
